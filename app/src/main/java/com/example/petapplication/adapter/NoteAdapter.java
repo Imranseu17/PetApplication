@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.adapters.AdapterViewBindingAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,9 +35,11 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
         @Override
         public boolean areContentsTheSame(@NonNull Note oldNoteItem, @NonNull Note newNoteItem) {
-            return oldNoteItem.getTitle().equals(newNoteItem.getTitle())
+            return oldNoteItem.getTaskName().equals(newNoteItem.getTaskName())
                     && oldNoteItem.getDescription().equals(newNoteItem.getDescription())
-                    && oldNoteItem.getPriority() == newNoteItem.getPriority();
+                    && oldNoteItem.getStatus().equals(newNoteItem.getStatus())
+                    && oldNoteItem.getCreatedDate().equals(newNoteItem.getCreatedDate())
+                    && oldNoteItem.getDeadline().equals(newNoteItem.getDeadline());
         }
     };
 
@@ -55,9 +56,12 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
     public void onBindViewHolder(@NonNull NoteHolder noteHolder, int i) {
 
         Note note = getItem(i);
-        noteHolder.title.setText(note.getTitle());
-        noteHolder.description.setText(note.getDescription());
-        noteHolder.priority.setText(String.valueOf(note.getPriority()));
+        noteHolder.title.setText("Task Name: "+note.getTaskName());
+        noteHolder.description.setText("Description: "+note.getDescription());
+        noteHolder.status.setText("Status: "+String.valueOf(note.getStatus()));
+        noteHolder.deadlineDate.setText("Deadline: "+String.valueOf(note.getDeadline()));
+        noteHolder.createdDate.setText("Created Date: "+String.valueOf(note.getCreatedDate()));
+
 
     }
 
@@ -70,12 +74,17 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
     class NoteHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.text_view_title)
+        @BindView(R.id.title)
         TextView title;
-        @BindView(R.id.text_view_description)
+        @BindView(R.id.description)
         TextView description;
-        @BindView(R.id.text_view_priority)
-        TextView priority;
+        @BindView(R.id.status)
+        TextView status;
+        @BindView(R.id.createdDate)
+        TextView createdDate;
+        @BindView(R.id.deadlineDate)
+        TextView deadlineDate;
+
 
 
         public NoteHolder(@NonNull View itemView) {

@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 startActivityForResult
-                        (new Intent(MainActivity.this,AddNoteActivity.class),ADD_NOTE_REQUEST);
+                        (new Intent
+                                (MainActivity.this,AddNoteActivity.class),ADD_NOTE_REQUEST);
 
             }
         });
@@ -87,9 +88,10 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(Note note) {
                 Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
                 intent.putExtra(EditNoteActivity.EXTRA_ID, note.getId());
-                intent.putExtra(EditNoteActivity.EXTRA_TITLE, note.getTitle());
+                intent.putExtra(EditNoteActivity.EXTRA_TITLE, note.getTaskName());
                 intent.putExtra(EditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
-                intent.putExtra(EditNoteActivity.EXTRA_PRIORITY, note.getPriority());
+                intent.putExtra(EditNoteActivity.EXTRA_STATUS, note.getStatus());
+                intent.putExtra(EditNoteActivity.DEADLINE,note.getDeadline());
                 startActivityForResult(intent, EDIT_NOTE_REQUEST);
             }
         });
@@ -103,9 +105,11 @@ public class MainActivity extends AppCompatActivity {
 
             String title = data.getStringExtra(AddNoteActivity.EXTRA_TITLE);
             String description = data.getStringExtra(AddNoteActivity.EXTRA_DESCRIPTION);
-            int priority  = data.getIntExtra(AddNoteActivity.EXTRA_PRIORITY,1);
+            String status  = data.getStringExtra(AddNoteActivity.EXTRA_STATUS);
+            String deadline = data.getStringExtra(AddNoteActivity.DEADLINE);
+            String createdDate = data.getStringExtra(AddNoteActivity.CREATED_DATE);
 
-            Note note = new Note(title,description,priority);
+            Note note = new Note(title,description,status,createdDate,deadline);
             noteViewModel.insert(note);
 
             Toast.makeText(this," Note Saved ",Toast.LENGTH_SHORT).show();
@@ -122,9 +126,11 @@ public class MainActivity extends AppCompatActivity {
 
             String title = data.getStringExtra(EditNoteActivity.EXTRA_TITLE);
             String description = data.getStringExtra(EditNoteActivity.EXTRA_DESCRIPTION);
-            int priority = data.getIntExtra(EditNoteActivity.EXTRA_PRIORITY, 1);
+            String status  = data.getStringExtra(AddNoteActivity.EXTRA_STATUS);
+            String deadline = data.getStringExtra(AddNoteActivity.DEADLINE);
+            String createdDate = data.getStringExtra(AddNoteActivity.CREATED_DATE);
 
-            Note note = new Note(title, description, priority);
+            Note note = new Note(title,description,status,createdDate,deadline);
             note.setId(id);
             noteViewModel.update(note);
 

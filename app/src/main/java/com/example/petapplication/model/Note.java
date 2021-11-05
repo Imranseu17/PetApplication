@@ -9,16 +9,24 @@ public class Note {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String title;
+    private String taskName;
 
     private String description;
 
-    private int priority;
+    private String status;
 
-    public Note( String title, String description, int priority) {
-        this.title = title;
+    private String createdDate;
+
+    private String deadline;
+
+
+    public Note(String taskName, String description,
+                String status,String createdDate,String deadline) {
+        this.taskName = taskName;
         this.description = description;
-        this.priority = priority;
+        this.status = status;
+        this.createdDate = createdDate;
+        this.deadline = deadline;
     }
 
     public void setId(int id){
@@ -29,15 +37,23 @@ public class Note {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTaskName() {
+        return taskName;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public int getPriority() {
-        return priority;
+    public String getStatus() {
+        return status;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public String getDeadline() {
+        return deadline;
     }
 }
