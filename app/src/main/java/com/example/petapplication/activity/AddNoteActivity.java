@@ -2,22 +2,30 @@ package com.example.petapplication.activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.petapplication.R;
 import com.example.petapplication.databinding.ActivityAddNoteBinding;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.text.SimpleDateFormat;
@@ -52,6 +60,10 @@ public class AddNoteActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         addNoteBinding = DataBindingUtil. setContentView(this,R.layout.activity_add_note);
 
+        // Full screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         addNoteBinding. spinner.setItems("Open", "In-Progress", "Test", "Done");
         addNoteBinding. spinner.setOnItemSelectedListener
                 (new MaterialSpinner.OnItemSelectedListener<String>() {
@@ -62,8 +74,6 @@ public class AddNoteActivity extends AppCompatActivity{
             }
         });
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        setTitle("Add Note");
         calendar=Calendar.getInstance();
         addNoteBinding.calender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +87,27 @@ public class AddNoteActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 saveNote();
+            }
+        });
+
+        addNoteBinding.emailLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emailSave();
+            }
+        });
+
+        addNoteBinding.phoneLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                phoneNumberSave();
+            }
+        });
+
+        addNoteBinding.urlLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                urlSave();
             }
         });
     }
@@ -93,8 +124,9 @@ public class AddNoteActivity extends AppCompatActivity{
 
         String deadlineDate = addNoteBinding.deadlineDate.getText().toString();
 
-        if(title.isEmpty() || description.isEmpty()){
-            Toast.makeText(this," Please insert a title and description",
+        if(title.isEmpty() || description.isEmpty() || status.isEmpty() ||
+              deadlineDate.equals("00.00.0000")){
+            Toast.makeText(this," All fill are required please fill up all fill",
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -107,9 +139,32 @@ public class AddNoteActivity extends AppCompatActivity{
         data.putExtra(DEADLINE,deadlineDate);
 
         setResult(RESULT_OK,data);
-        finish();
+        saveSuccessfully();
+    }
+    private void saveSuccessfully(){
+        Dialog dialog = new Dialog(AddNoteActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setContentView(R.layout.save_successfully);
+
+
+        AppCompatButton ok = dialog.findViewById(R.id.ok);
+
+
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
 
     }
+
 
     private void setDateTimeField() {
         Calendar newCalendar = calendar;
@@ -126,6 +181,93 @@ public class AddNoteActivity extends AppCompatActivity{
         }, newCalendar.get(Calendar.YEAR),
                 newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
+    }
+
+    private void  emailSave(){
+        Dialog dialog = new Dialog(AddNoteActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setContentView(R.layout.email_save);
+
+        TextInputEditText emailText = dialog.findViewById(R.id.edit_mail);
+        AppCompatButton saveEmail = dialog.findViewById(R.id.emailSave);
+
+        String email = emailText.getText().toString();
+
+        saveEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(email.isEmpty()){
+                    Toast.makeText(AddNoteActivity.this," Please give E-mail",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+
+    }
+
+    private void  phoneNumberSave(){
+        Dialog dialog = new Dialog(AddNoteActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setContentView(R.layout.phone_number_save);
+
+        TextInputEditText phoneNumberText = dialog.findViewById(R.id.edit_phone_number);
+        AppCompatButton savePhone = dialog.findViewById(R.id.phoneSave);
+
+        String phoneNumber = phoneNumberText.getText().toString();
+
+        savePhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(phoneNumber.isEmpty()){
+                    Toast.makeText(AddNoteActivity.this," Please give Phone Number",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+
+    }
+
+    private void  urlSave(){
+        Dialog dialog = new Dialog(AddNoteActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setContentView(R.layout.url_save);
+
+        TextInputEditText urlText = dialog.findViewById(R.id.edit_url);
+        AppCompatButton saveURL = dialog.findViewById(R.id.saveURL);
+
+        String url = urlText.getText().toString();
+
+        saveURL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(url.isEmpty()){
+                    Toast.makeText(AddNoteActivity.this," Please give URL",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+
     }
 
 

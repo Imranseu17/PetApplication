@@ -1,18 +1,28 @@
 package com.example.petapplication.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petapplication.R;
+import com.example.petapplication.activity.EditNoteActivity;
+import com.example.petapplication.activity.MainActivity;
 import com.example.petapplication.callbacks.OnItemClickListener;
 import com.example.petapplication.model.Note;
+import com.example.petapplication.viewModel.NoteViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,10 +32,17 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
 
     private OnItemClickListener listener;
+    private NoteViewModel noteViewModel;
+    private Context context;
+    SharedPreferences pref ;
 
-    public NoteAdapter() {
+
+    public NoteAdapter(Context context) {
         super(DIFE_CALLBACK);
+        this.context = context;
     }
+
+
 
     public static final DiffUtil.ItemCallback<Note> DIFE_CALLBACK = new DiffUtil.ItemCallback<Note>() {
         @Override
@@ -56,12 +73,35 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
     public void onBindViewHolder(@NonNull NoteHolder noteHolder, int i) {
 
         Note note = getItem(i);
-        noteHolder.title.setText("Task Name: "+note.getTaskName());
-        noteHolder.description.setText("Description: "+note.getDescription());
-        noteHolder.status.setText("Status: "+String.valueOf(note.getStatus()));
-        noteHolder.deadlineDate.setText("Deadline: "+String.valueOf(note.getDeadline()));
-        noteHolder.createdDate.setText("Created Date: "+String.valueOf(note.getCreatedDate()));
+        noteHolder.title.setText(note.getTaskName());
+        noteHolder.deadlineDate.setText("Deadline:   "+String.valueOf(note.getDeadline()));
+        noteHolder.createdDate.setText("Created Date:   "+String.valueOf(note.getCreatedDate()));
+        noteViewModel = ViewModelProviders.of((FragmentActivity) context).get(NoteViewModel.class);
+        noteHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noteViewModel.delete(getNoteAt(noteHolder.getAdapterPosition()));
+                Toast.makeText( context,"Note Deleted",Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        noteHolder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EditNoteActivity.class);
+                intent.putExtra(EditNoteActivity.EXTRA_ID, note.getId());
+                intent.putExtra(EditNoteActivity.EXTRA_TITLE, note.getTaskName());
+                intent.putExtra(EditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
+                intent.putExtra(EditNoteActivity.EXTRA_STATUS, note.getStatus());
+                intent.putExtra(EditNoteActivity.DEADLINE,note.getDeadline());
+                 context.startActivity(intent);
+            }
+        });
+        pref = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+
+        editor.putString("status", note.getStatus());
+        editor.commit();
 
     }
 
@@ -76,14 +116,14 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
 
         @BindView(R.id.title)
         TextView title;
-        @BindView(R.id.description)
-        TextView description;
-        @BindView(R.id.status)
-        TextView status;
         @BindView(R.id.createdDate)
         TextView createdDate;
         @BindView(R.id.deadlineDate)
         TextView deadlineDate;
+        @BindView(R.id.editButton)
+        ImageView editButton;
+        @BindView(R.id.deleteButton)
+        ImageView deleteButton;
 
 
 

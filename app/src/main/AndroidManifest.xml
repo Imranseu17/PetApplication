@@ -10,11 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetApplication">
         <activity
+            android:name=".activity.TaskDeatilsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity
             android:name=".activity.EditNoteActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity
             android:name=".activity.AddNoteActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"

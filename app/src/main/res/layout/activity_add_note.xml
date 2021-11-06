@@ -14,6 +14,25 @@
         android:background="#fae5d3"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#99A3A4"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=" Add Tasks "
+                android:textSize="20dp"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -143,6 +162,7 @@
             android:layout_marginRight="15dp">
 
             <LinearLayout
+                android:id="@+id/emailLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -164,6 +184,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/phoneLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="70dp"
@@ -185,6 +206,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/urlLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="70dp"

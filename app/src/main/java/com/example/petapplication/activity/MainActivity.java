@@ -2,7 +2,9 @@ package com.example.petapplication.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,12 +12,20 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.petapplication.R;
@@ -25,6 +35,8 @@ import com.example.petapplication.databinding.ActivityMainBinding;
 import com.example.petapplication.model.Note;
 import com.example.petapplication.viewModel.NoteViewModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,10 +48,17 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding mainBinding;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil. setContentView(this,R.layout.activity_main);
+
+        // Full screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
        mainBinding.buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       mainBinding. recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mainBinding. recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mainBinding. recyclerView.setHasFixedSize(true);
 
-        final NoteAdapter noteAdapter = new NoteAdapter();
+        final NoteAdapter noteAdapter = new NoteAdapter(this);
         mainBinding. recyclerView.setAdapter(noteAdapter);
 
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
@@ -83,18 +102,39 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView( mainBinding.recyclerView);
 
+
+
         noteAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(Note note) {
-                Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
+                Intent intent = new Intent(MainActivity.this, TaskDeatilsActivity.class);
                 intent.putExtra(EditNoteActivity.EXTRA_ID, note.getId());
                 intent.putExtra(EditNoteActivity.EXTRA_TITLE, note.getTaskName());
                 intent.putExtra(EditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
                 intent.putExtra(EditNoteActivity.EXTRA_STATUS, note.getStatus());
                 intent.putExtra(EditNoteActivity.DEADLINE,note.getDeadline());
+                intent.putExtra(EditNoteActivity.CREATED_DATE,note.getCreatedDate());
+                intent.putExtra("note",note);
                 startActivityForResult(intent, EDIT_NOTE_REQUEST);
             }
         });
+
+       SharedPreferences pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
+
+        if(pref.getString("status","Open").equals("Open")){
+            mainBinding.open.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+        if(pref.getString("status","Open").equals("In-Progress")){
+            mainBinding.inProgress.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+        else if(pref.getString("status","Open").equals("Test")){
+            mainBinding.test.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+        else if(pref.getString("status","Open").equals("Done")) {
+            mainBinding.done.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+
+
     }
 
     @Override
@@ -114,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(this," Note Saved ",Toast.LENGTH_SHORT).show();
 
+
         }
 
         else if (requestCode == EDIT_NOTE_REQUEST && resultCode == RESULT_OK) {
@@ -126,15 +167,16 @@ public class MainActivity extends AppCompatActivity {
 
             String title = data.getStringExtra(EditNoteActivity.EXTRA_TITLE);
             String description = data.getStringExtra(EditNoteActivity.EXTRA_DESCRIPTION);
-            String status  = data.getStringExtra(AddNoteActivity.EXTRA_STATUS);
-            String deadline = data.getStringExtra(AddNoteActivity.DEADLINE);
-            String createdDate = data.getStringExtra(AddNoteActivity.CREATED_DATE);
+            String status  = data.getStringExtra(EditNoteActivity.EXTRA_STATUS);
+            String deadline = data.getStringExtra(EditNoteActivity.DEADLINE);
+            String createdDate = data.getStringExtra(EditNoteActivity.CREATED_DATE);
 
             Note note = new Note(title,description,status,createdDate,deadline);
             note.setId(id);
             noteViewModel.update(note);
 
-            Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
+           Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
+
         }
 
         else
@@ -161,4 +203,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+
+
+
 }
