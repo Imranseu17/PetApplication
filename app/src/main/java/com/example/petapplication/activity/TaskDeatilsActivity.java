@@ -153,6 +153,11 @@ public class TaskDeatilsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         emailText.setText(intent.getStringExtra(E_Mail));
 
+        emailText.setFocusable(false);
+        emailText.setEnabled(false);
+        emailText.setFocusableInTouchMode(false);
+        emailText.setClickable(false);
+
         showEmail.setText("OK");
 
         showEmail.setOnClickListener(new View.OnClickListener() {
@@ -181,6 +186,11 @@ public class TaskDeatilsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         phoneNumberText.setText(intent.getStringExtra(PHONE_NUMBER));
 
+        phoneNumberText.setFocusable(false);
+        phoneNumberText.setEnabled(false);
+        phoneNumberText.setFocusableInTouchMode(false);
+        phoneNumberText.setClickable(false);
+
         showPhone.setText("OK");
 
         showPhone.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +217,11 @@ public class TaskDeatilsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         urlText.setText(intent.getStringExtra(URL));
+
+        urlText.setFocusable(false);
+        urlText.setEnabled(false);
+        urlText.setFocusableInTouchMode(false);
+        urlText.setClickable(false);
 
         showURL.setText("OK");
 

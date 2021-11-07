@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
-        android:backgroundTint="#99A3A4"
+        android:backgroundTint="#D5DBDB"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp">
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/title"
                     android:textStyle="bold"
-                    android:textColor="#B03A2E"
+                    android:textColor="#913831"
                     android:layout_marginStart="10dp"
                     android:layout_alignParentStart="true"
                     android:text="Title"

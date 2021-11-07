@@ -88,22 +88,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
-                                  @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
+        // Swipe Delete
 
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
-                noteViewModel.delete(noteAdapter.getNoteAt(viewHolder.getAdapterPosition()));
-                Toast.makeText( MainActivity.this,"Note Deleted",Toast.LENGTH_SHORT).show();
-
-            }
-        }).attachToRecyclerView( mainBinding.recyclerView);
+//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+//                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
+//                                  @NonNull RecyclerView.ViewHolder viewHolder1) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+//
+//                noteViewModel.delete(noteAdapter.getNoteAt(viewHolder.getAdapterPosition()));
+//                Toast.makeText( MainActivity.this,"Note Deleted",Toast.LENGTH_SHORT).show();
+//
+//            }
+//        }).attachToRecyclerView( mainBinding.recyclerView);
 
 
 
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         if(pref.getString("status","").equals("Open")){
             mainBinding.open.setTextColor(Color.parseColor("#FFFFFF"));
         }
-        if(pref.getString("status","").equals("In-Progress")){
+        else if(pref.getString("status","").equals("In-Progress")){
             mainBinding.inProgress.setTextColor(Color.parseColor("#FFFFFF"));
         }
         else if(pref.getString("status","").equals("Test")){
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             Note note = new Note(title,description,status,createdDate,deadline,email,phoneNumber,url);
             noteViewModel.insert(note);
 
-            Toast.makeText(this," Note Saved ",Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this," Note Saved ",Toast.LENGTH_SHORT).show();
 
 
         }
@@ -188,12 +190,12 @@ public class MainActivity extends AppCompatActivity {
             note.setId(id);
             noteViewModel.update(note);
 
-           Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
+         //  Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
 
         }
 
-        else
-            Toast.makeText(this," Note not Saved ",Toast.LENGTH_SHORT).show();
+       // else
+          //  Toast.makeText(this," Note not Saved ",Toast.LENGTH_SHORT).show();
     }
 
     @Override

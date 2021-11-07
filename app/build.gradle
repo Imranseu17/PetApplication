@@ -3,6 +3,15 @@ plugins {
 }
 
 android {
+    signingConfigs {
+
+        release {
+            keyAlias 'keydata.keystore'
+            keyPassword '123456'
+            storeFile file('jks/keydata.keystore')
+            storePassword '123456'
+        }
+    }
     compileSdk 31
 
     defaultConfig {

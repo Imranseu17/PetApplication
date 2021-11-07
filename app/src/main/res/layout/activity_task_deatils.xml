@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#99A3A4"
+            android:background="#D5DBDB"
             android:orientation="vertical">
 
             <TextView
@@ -79,7 +79,7 @@
                     android:text="Status:"
                     android:textStyle="bold"
                     android:textSize="18dp"
-                    android:textColor="#E91E63"
+                    android:textColor="#913831"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
@@ -93,7 +93,7 @@
                     android:text="In-Progress"
                     android:textStyle="bold"
                     android:textSize="18dp"
-                    android:textColor="#FF9800"
+                    android:textColor="#FF5722"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
@@ -108,7 +108,7 @@
                 android:layout_gravity="center"
                 android:text="NoteMe Project"
                 android:textStyle="bold"
-                android:textColor="#F44336"
+                android:textColor="#913831"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
@@ -268,7 +268,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:src="@drawable/icons8_edit_30"
-                android:backgroundTint="#E67E22"
+                android:backgroundTint="#FF5722"
 
                 android:layout_margin="32dp"/>
 
