@@ -148,7 +148,7 @@ public class EditNoteActivity extends AppCompatActivity {
         String phoneNumber = pref.getString("Phone-Number","");
         String url = pref.getString("URL","");
 
-        if(title.isEmpty() || description.isEmpty() || status.isEmpty() ||
+        if(title.isEmpty() || description.isEmpty() ||
                 deadlineDate.equals("00.00.0000")){
             Toast.makeText(this," All fill are required please fill up all fill",
                     Toast.LENGTH_SHORT).show();
