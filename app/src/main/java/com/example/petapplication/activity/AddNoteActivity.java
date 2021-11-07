@@ -8,7 +8,9 @@ import androidx.databinding.DataBindingUtil;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,12 +49,19 @@ public class AddNoteActivity extends AppCompatActivity{
             "com.example.livedataroomviewmodel.CREATED_DATE";
     public static final String DEADLINE =
             "com.example.livedataroomviewmodel.DEADLINE";
+    public static final String E_Mail =
+            "com.example.livedataroomviewmodel.E_Mail ";
+    public static final String PHONE_NUMBER =
+            "com.example.livedataroomviewmodel.PHONE_NUMBER";
+    public static final String URL =
+            "com.example.livedataroomviewmodel.URL";
 
     ActivityAddNoteBinding addNoteBinding;
     String statusValue;
     Calendar calendar;
     int year,month,dayOfMonth;
     DatePickerDialog datePickerDialog;
+    SharedPreferences pref ;
 
 
     @Override
@@ -63,6 +72,8 @@ public class AddNoteActivity extends AppCompatActivity{
         // Full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
 
         addNoteBinding. spinner.setItems("Open", "In-Progress", "Test", "Done");
         addNoteBinding. spinner.setOnItemSelectedListener
@@ -124,6 +135,11 @@ public class AddNoteActivity extends AppCompatActivity{
 
         String deadlineDate = addNoteBinding.deadlineDate.getText().toString();
 
+
+        String email = pref.getString("E-mail","");
+        String phoneNumber = pref.getString("Phone-Number","");
+        String url = pref.getString("URL","");
+
         if(title.isEmpty() || description.isEmpty() || status.isEmpty() ||
               deadlineDate.equals("00.00.0000")){
             Toast.makeText(this," All fill are required please fill up all fill",
@@ -137,6 +153,9 @@ public class AddNoteActivity extends AppCompatActivity{
         data.putExtra(EXTRA_STATUS,status);
         data.putExtra(CREATED_DATE,createdDate);
         data.putExtra(DEADLINE,deadlineDate);
+        data.putExtra(E_Mail,email);
+        data.putExtra(PHONE_NUMBER,phoneNumber);
+        data.putExtra(URL,url);
 
         setResult(RESULT_OK,data);
         saveSuccessfully();
@@ -193,16 +212,19 @@ public class AddNoteActivity extends AppCompatActivity{
         TextInputEditText emailText = dialog.findViewById(R.id.edit_mail);
         AppCompatButton saveEmail = dialog.findViewById(R.id.emailSave);
 
-        String email = emailText.getText().toString();
 
         saveEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(email.isEmpty()){
+                if(emailText.getText().toString().equals("")){
                     Toast.makeText(AddNoteActivity.this," Please give E-mail",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("E-mail", emailText.getText().toString());
+                editor.commit();
                 dialog.dismiss();
             }
         });
@@ -222,16 +244,20 @@ public class AddNoteActivity extends AppCompatActivity{
         TextInputEditText phoneNumberText = dialog.findViewById(R.id.edit_phone_number);
         AppCompatButton savePhone = dialog.findViewById(R.id.phoneSave);
 
-        String phoneNumber = phoneNumberText.getText().toString();
+
 
         savePhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(phoneNumber.isEmpty()){
+                if(phoneNumberText.getText().toString().equals("")){
                     Toast.makeText(AddNoteActivity.this," Please give Phone Number",
                             Toast.LENGTH_SHORT).show();
-                    return;
+                return;
                 }
+
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("Phone-Number",  phoneNumberText.getText().toString());
+                editor.commit();
                 dialog.dismiss();
             }
         });
@@ -251,16 +277,20 @@ public class AddNoteActivity extends AppCompatActivity{
         TextInputEditText urlText = dialog.findViewById(R.id.edit_url);
         AppCompatButton saveURL = dialog.findViewById(R.id.saveURL);
 
-        String url = urlText.getText().toString();
+
 
         saveURL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(url.isEmpty()){
+                if(urlText.getText().toString().equals("")){
                     Toast.makeText(AddNoteActivity.this," Please give URL",
                             Toast.LENGTH_SHORT).show();
-                    return;
+                   return;
                 }
+
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("URL",  urlText.getText().toString());
+                editor.commit();
                 dialog.dismiss();
             }
         });

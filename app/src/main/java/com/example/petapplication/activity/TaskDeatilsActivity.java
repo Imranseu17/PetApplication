@@ -32,6 +32,12 @@ public class TaskDeatilsActivity extends AppCompatActivity {
             "com.example.livedataroomviewmodel.CREATED_DATE";
     public static final String DEADLINE =
             "com.example.livedataroomviewmodel.DEADLINE";
+    public static final String E_Mail =
+            "com.example.livedataroomviewmodel.E_Mail ";
+    public static final String PHONE_NUMBER =
+            "com.example.livedataroomviewmodel.PHONE_NUMBER";
+    public static final String URL =
+            "com.example.livedataroomviewmodel.URL";
 
     ActivityTaskDeatilsBinding deatilsBinding;
     private NoteViewModel noteViewModel;
@@ -73,6 +79,9 @@ public class TaskDeatilsActivity extends AppCompatActivity {
                 intent.putExtra(EditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
                 intent.putExtra(EditNoteActivity.EXTRA_STATUS, note.getStatus());
                 intent.putExtra(EditNoteActivity.DEADLINE,note.getDeadline());
+                intent.putExtra(EditNoteActivity.E_Mail,note.getEmail());
+                intent.putExtra(EditNoteActivity.PHONE_NUMBER,note.getPhoneNumber());
+                intent.putExtra(EditNoteActivity.URL,note.getUrl());
                 startActivityForResult(intent, EDIT_NOTE_REQUEST);
             }
         });
@@ -94,7 +103,7 @@ public class TaskDeatilsActivity extends AppCompatActivity {
         deatilsBinding.urlLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                urlSave();
+                urlShow();
             }
         });
     }
@@ -113,11 +122,14 @@ public class TaskDeatilsActivity extends AppCompatActivity {
 
             String title = data.getStringExtra(EditNoteActivity.EXTRA_TITLE);
             String description = data.getStringExtra(EditNoteActivity.EXTRA_DESCRIPTION);
-            String status  = data.getStringExtra(AddNoteActivity.EXTRA_STATUS);
-            String deadline = data.getStringExtra(AddNoteActivity.DEADLINE);
-            String createdDate = data.getStringExtra(AddNoteActivity.CREATED_DATE);
+            String status  = data.getStringExtra(EditNoteActivity.EXTRA_STATUS);
+            String deadline = data.getStringExtra(EditNoteActivity.DEADLINE);
+            String email = data.getStringExtra(EditNoteActivity.E_Mail);
+            String phoneNumber = data.getStringExtra(EditNoteActivity.PHONE_NUMBER);
+            String url = data.getStringExtra(EditNoteActivity.URL);
+            String createdDate = data.getStringExtra(EditNoteActivity.CREATED_DATE);
 
-            Note note = new Note(title,description,status,createdDate,deadline);
+            Note note = new Note(title,description,status,createdDate,deadline,email,phoneNumber,url);
             note.setId(id);
             noteViewModel.update(note);
 
@@ -136,18 +148,16 @@ public class TaskDeatilsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.email_save);
 
         TextInputEditText emailText = dialog.findViewById(R.id.edit_mail);
-        AppCompatButton saveEmail = dialog.findViewById(R.id.emailSave);
+        AppCompatButton showEmail = dialog.findViewById(R.id.emailSave);
 
-        String email = emailText.getText().toString();
+        Intent intent = getIntent();
+        emailText.setText(intent.getStringExtra(E_Mail));
 
-        saveEmail.setOnClickListener(new View.OnClickListener() {
+        showEmail.setText("OK");
+
+        showEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(email.isEmpty()){
-                    Toast.makeText(TaskDeatilsActivity.this," Please give E-mail",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 dialog.dismiss();
             }
 
@@ -166,18 +176,16 @@ public class TaskDeatilsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.phone_number_save);
 
         TextInputEditText phoneNumberText = dialog.findViewById(R.id.edit_phone_number);
-        AppCompatButton savePhone = dialog.findViewById(R.id.phoneSave);
+        AppCompatButton showPhone = dialog.findViewById(R.id.phoneSave);
 
-        String phoneNumber = phoneNumberText.getText().toString();
+        Intent intent = getIntent();
+        phoneNumberText.setText(intent.getStringExtra(PHONE_NUMBER));
 
-        savePhone.setOnClickListener(new View.OnClickListener() {
+        showPhone.setText("OK");
+
+        showPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(phoneNumber.isEmpty()){
-                    Toast.makeText(TaskDeatilsActivity.this," Please give Phone Number",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 dialog.dismiss();
             }
         });
@@ -187,7 +195,7 @@ public class TaskDeatilsActivity extends AppCompatActivity {
 
     }
 
-    private void urlSave(){
+    private void urlShow(){
         Dialog dialog = new Dialog(TaskDeatilsActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -195,18 +203,16 @@ public class TaskDeatilsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.url_save);
 
         TextInputEditText urlText = dialog.findViewById(R.id.edit_url);
-        AppCompatButton saveURL = dialog.findViewById(R.id.saveURL);
+        AppCompatButton showURL = dialog.findViewById(R.id.saveURL);
 
-        String url = urlText.getText().toString();
+        Intent intent = getIntent();
+        urlText.setText(intent.getStringExtra(URL));
 
-        saveURL.setOnClickListener(new View.OnClickListener() {
+        showURL.setText("OK");
+
+        showURL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(url.isEmpty()){
-                    Toast.makeText(TaskDeatilsActivity.this," Please give URL",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 dialog.dismiss();
             }
         });

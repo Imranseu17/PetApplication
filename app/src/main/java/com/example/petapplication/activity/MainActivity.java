@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding mainBinding;
 
+    SharedPreferences pref ;
+
 
 
 
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // Full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
        mainBinding.buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(EditNoteActivity.EXTRA_STATUS, note.getStatus());
                 intent.putExtra(EditNoteActivity.DEADLINE,note.getDeadline());
                 intent.putExtra(EditNoteActivity.CREATED_DATE,note.getCreatedDate());
+                intent.putExtra(EditNoteActivity.E_Mail,pref.getString("E-mail",""));
+                intent.putExtra(EditNoteActivity.PHONE_NUMBER,pref.getString("Phone-Number",""));
+                intent.putExtra(EditNoteActivity.URL,pref.getString("URL",""));
+                intent.putExtra(EditNoteActivity.URL,note.getUrl());
                 intent.putExtra("note",note);
                 startActivityForResult(intent, EDIT_NOTE_REQUEST);
             }
@@ -121,16 +128,16 @@ public class MainActivity extends AppCompatActivity {
 
        SharedPreferences pref = getSharedPreferences("pref", Context.MODE_PRIVATE);
 
-        if(pref.getString("status","Open").equals("Open")){
+        if(pref.getString("status","").equals("Open")){
             mainBinding.open.setTextColor(Color.parseColor("#FFFFFF"));
         }
-        if(pref.getString("status","Open").equals("In-Progress")){
+        if(pref.getString("status","").equals("In-Progress")){
             mainBinding.inProgress.setTextColor(Color.parseColor("#FFFFFF"));
         }
-        else if(pref.getString("status","Open").equals("Test")){
+        else if(pref.getString("status","").equals("Test")){
             mainBinding.test.setTextColor(Color.parseColor("#FFFFFF"));
         }
-        else if(pref.getString("status","Open").equals("Done")) {
+        else if(pref.getString("status","").equals("Done")) {
             mainBinding.done.setTextColor(Color.parseColor("#FFFFFF"));
         }
 
@@ -148,8 +155,11 @@ public class MainActivity extends AppCompatActivity {
             String status  = data.getStringExtra(AddNoteActivity.EXTRA_STATUS);
             String deadline = data.getStringExtra(AddNoteActivity.DEADLINE);
             String createdDate = data.getStringExtra(AddNoteActivity.CREATED_DATE);
+            String email = data.getStringExtra(AddNoteActivity.E_Mail);
+            String phoneNumber = data.getStringExtra(AddNoteActivity.PHONE_NUMBER);
+            String url = data.getStringExtra(AddNoteActivity.URL);
 
-            Note note = new Note(title,description,status,createdDate,deadline);
+            Note note = new Note(title,description,status,createdDate,deadline,email,phoneNumber,url);
             noteViewModel.insert(note);
 
             Toast.makeText(this," Note Saved ",Toast.LENGTH_SHORT).show();
@@ -170,8 +180,11 @@ public class MainActivity extends AppCompatActivity {
             String status  = data.getStringExtra(EditNoteActivity.EXTRA_STATUS);
             String deadline = data.getStringExtra(EditNoteActivity.DEADLINE);
             String createdDate = data.getStringExtra(EditNoteActivity.CREATED_DATE);
+            String email = data.getStringExtra(EditNoteActivity.E_Mail);
+            String phoneNumber = data.getStringExtra(EditNoteActivity.PHONE_NUMBER);
+            String url = data.getStringExtra(EditNoteActivity.URL);
 
-            Note note = new Note(title,description,status,createdDate,deadline);
+            Note note = new Note(title,description,status,createdDate,deadline,email,phoneNumber,url);
             note.setId(id);
             noteViewModel.update(note);
 

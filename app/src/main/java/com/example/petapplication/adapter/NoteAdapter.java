@@ -94,6 +94,9 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteHolder> {
                 intent.putExtra(EditNoteActivity.EXTRA_DESCRIPTION, note.getDescription());
                 intent.putExtra(EditNoteActivity.EXTRA_STATUS, note.getStatus());
                 intent.putExtra(EditNoteActivity.DEADLINE,note.getDeadline());
+                intent.putExtra(EditNoteActivity.E_Mail,note.getEmail());
+                intent.putExtra(EditNoteActivity.PHONE_NUMBER,note.getPhoneNumber());
+                intent.putExtra(EditNoteActivity.URL,note.getUrl());
                  context.startActivity(intent);
             }
         });

@@ -13,7 +13,7 @@ import com.example.petapplication.dao.NoteDao;
 import com.example.petapplication.model.Note;
 
 
-@Database(entities = {Note.class},version =  2)
+@Database(entities = {Note.class},version =  3)
 public abstract class NoteDatabase extends RoomDatabase {
 
     private static NoteDatabase instance;
@@ -53,9 +53,11 @@ public abstract class NoteDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             noteDao.insert(new Note("Title 1",
-                    "Description 1","Open","05.11.2021","08.11.2021"));
+                    "Description 1","Open","05.11.2021","08.11.2021",
+                    "","",""));
             noteDao.insert(new Note("Title 1",
-                    "Description 2","Done","05.11.2021","08.11.2021"));
+                    "Description 2","Done","05.11.2021","08.11.2021",
+                    "","",""));
             return null;
         }
     }
