@@ -194,30 +194,34 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-       // else
-          //  Toast.makeText(this," Note not Saved ",Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this," Note not Saved ",Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main_menu,menu);
-        return true;
-    }
+    // all notes delete
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater menuInflater = getMenuInflater();
+//        menuInflater.inflate(R.menu.main_menu,menu);
+//        return true;
+//    }
 
-            case R.id.delete_all_notes:
-                noteViewModel.deleteAllNotes();
-                Toast.makeText(this,"All notes Deleted",Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
 
-    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//
+//            case R.id.delete_all_notes:
+//                noteViewModel.deleteAllNotes();
+//                Toast.makeText(this,"All notes Deleted",Toast.LENGTH_SHORT).show();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//
+//    }
 
 
 
